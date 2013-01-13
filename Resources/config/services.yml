@@ -1,0 +1,7 @@
+parameters:
+#    jfk_community.example.class: JFK\CommunityBundle\Example
+
+services:
+#    jfk_community.example:
+#        class: %jfk_community.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
