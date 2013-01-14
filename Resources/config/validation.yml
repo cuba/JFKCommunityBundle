@@ -1,0 +1,4 @@
+JFK\CommunityBundle\Entity\Topic:
+    properties:
+        title:
+            - NotBlank: ~

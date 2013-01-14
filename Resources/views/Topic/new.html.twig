@@ -1,0 +1,17 @@
+{% extends 'JFKCommunityBundle::layout.html.twig' %}
+
+{% block content %}
+    {% block topic %}
+       <h1>New Topic</h1>
+       <form action="{{ path('jfk_community_topics_new') }}" method="post" {{ form_enctype(form) }}>
+          {{ form_errors(form) }}
+
+          {{ form_row(form.title) }}
+          
+
+          {{ form_rest(form) }}
+
+          <input type="submit" />
+        </form>
+    {% endblock %}
+{% endblock %}

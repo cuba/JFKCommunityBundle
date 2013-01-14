@@ -42,6 +42,20 @@ class Post
      */
     private $dateUpdated;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Topic", inversedBy="posts", cascade={"persist"})
+     * @ORM\JoinColumn(name="topic_id", referencedColumnName="id")
+     */
+    protected $topic;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->setDateCreated(new \DateTime());
+        $this->setDateUpdated(new \DateTime());
+    }
 
     /**
      * Get id
@@ -120,5 +134,51 @@ class Post
     public function getDateUpdated()
     {
         return $this->dateUpdated;
+    }
+
+    /**
+     * Set category
+     *
+     * @param \JFK\CommunityBundle\Entity\Topic $category
+     * @return Post
+     */
+    public function setCategory(\JFK\CommunityBundle\Entity\Topic $category = null)
+    {
+        $this->category = $category;
+    
+        return $this;
+    }
+
+    /**
+     * Get category
+     *
+     * @return \JFK\CommunityBundle\Entity\Topic 
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * Set topic
+     *
+     * @param \JFK\CommunityBundle\Entity\Topic $topic
+     * @return Post
+     */
+    public function setTopic(\JFK\CommunityBundle\Entity\Topic $topic = null)
+    {
+        $this->topic = $topic;
+    
+        return $this;
+    }
+
+    /**
+     * Get topic
+     *
+     * @return \JFK\CommunityBundle\Entity\Topic 
+     */
+    public function getTopic()
+    {
+        return $this->topic;
     }
 }

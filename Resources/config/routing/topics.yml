@@ -1,0 +1,17 @@
+jfk_community_topics_new:
+    pattern:   /new
+    defaults:  { _controller: JFKCommunityBundle:Topics:new }
+
+jfk_community_topics_edit:
+    pattern:   /edit/{slug}
+    defaults:  { _controller: JFKCommunityBundle:Topics:edit }
+
+jfk_community_topics_index:
+    pattern:   /{page}
+    defaults:  { _controller: JFKCommunityBundle:Topics:index, page: 1 }
+    requirements:
+        page:  \d+
+
+jfk_community_topics_show:
+    pattern:   /{slug}
+    defaults:  { _controller: JFKCommunityBundle:Topics:show }

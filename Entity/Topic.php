@@ -3,6 +3,8 @@
 namespace JFK\CommunityBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use JFK\CommunityBundle\Utilities\TextUtilities;
 
 /**
  * Topic
@@ -31,9 +33,9 @@ class Topic
     /**
      * @var string
      *
-     * @ORM\Column(name="content", type="text")
+     * @ORM\Column(name="slug", type="string", length=255)
      */
-    private $content;
+    private $slug;
 
     /**
      * @var \DateTime
@@ -70,6 +72,26 @@ class Topic
      */
     private $published;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Post", mappedBy="topic", cascade={"persist"})
+     */
+    protected $posts;
+    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->posts = new ArrayCollection();
+        $firstPost = new Post();
+        $firstPost->setTopic($this);
+        $this->posts[] = $firstPost;
+        $this->setDateCreated($firstPost->getDateCreated());
+        $this->setDateUpdated($firstPost->getDateUpdated());
+        $this->setEnabled(true);
+        $this->setPublished(true);
+        $this->setApproved(true);
+    }
 
     /**
      * Get id
@@ -90,7 +112,7 @@ class Topic
     public function setTitle($title)
     {
         $this->title = $title;
-    
+        $this->setSlug(TextUtilities::slugify($title)); 
         return $this;
     }
 
@@ -105,35 +127,12 @@ class Topic
     }
 
     /**
-     * Set content
-     *
-     * @param string $content
-     * @return Topic
-     */
-    public function setContent($content)
-    {
-        $this->content = $content;
-    
-        return $this;
-    }
-
-    /**
-     * Get content
-     *
-     * @return string 
-     */
-    public function getContent()
-    {
-        return $this->content;
-    }
-
-    /**
      * Set dateCreated
      *
      * @param \DateTime $dateCreated
      * @return Topic
      */
-    public function setDateCreated($dateCreated)
+    public function setDateCreated(\DateTime $dateCreated)
     {
         $this->dateCreated = $dateCreated;
     
@@ -156,7 +155,7 @@ class Topic
      * @param \DateTime $dateUpdated
      * @return Topic
      */
-    public function setDateUpdated($dateUpdated)
+    public function setDateUpdated(\DateTime $dateUpdated)
     {
         $this->dateUpdated = $dateUpdated;
     
@@ -240,5 +239,85 @@ class Topic
     public function getEnabled()
     {
         return $this->enabled;
+    }
+
+    /**
+     * Add posts
+     *
+     * @param \JFK\CommunityBundle\Entity\Post $posts
+     * @return Topic
+     */
+    public function addPost(\JFK\CommunityBundle\Entity\Post $posts)
+    {
+        $this->posts[] = $posts;
+    
+        return $this;
+    }
+
+    /**
+     * Remove posts
+     *
+     * @param \JFK\CommunityBundle\Entity\Post $posts
+     */
+    public function removePost(\JFK\CommunityBundle\Entity\Post $posts)
+    {
+        $this->posts->removeElement($posts);
+    }
+
+    /**
+     * Get posts
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPosts()
+    {
+        return $this->posts;
+    }
+
+    /**
+     * Get firstPost
+     *
+     * @return \JFK\CommunityBundle\Entity\Post $post
+     */
+    public function getFirstPost()
+    {
+        if($this->posts->count() === 0){
+            return null;
+        }
+        return $this->posts->first();
+    }
+
+
+    /**
+     * Get lastPost
+     *
+     * @return \JFK\CommunityBundle\Entity\Post $post
+     */
+    public function getLastPost()
+    {
+        return $this->posts->last();
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return Topic
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }

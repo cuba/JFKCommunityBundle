@@ -1,3 +1,7 @@
 jfk_community_news_:
     resource: "@JFKCommunityBundle/Resources/config/routing/news.yml"
-    prefix:   /
+    prefix:   /news
+
+jfk_community_topics_:
+    resource: "@JFKCommunityBundle/Resources/config/routing/topics.yml"
+    prefix:   /topics
